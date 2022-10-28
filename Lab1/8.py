@@ -1,3 +1,6 @@
+from functools import reduce
+
+
 def izmeni(l1):
     l2 = l1.copy()
     for x in range(len(l2)):
@@ -8,4 +11,9 @@ def izmeni(l1):
     return l2
 
 
+def izracunaj(l1):
+    return list(map(lambda x: reduce(lambda a, b: a*b, x) if type(x) is list else x, l1))
+
+
 print(izmeni([1, 2, 3, 4, 5]))
+print(izracunaj([1, 5, [1, 5, 3], [4, 2], 2, [6, 3]]))
