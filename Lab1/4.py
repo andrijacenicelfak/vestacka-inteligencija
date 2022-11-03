@@ -1,5 +1,9 @@
+from itertools import starmap
+
+
 def zbir(l):
     return list(filter(lambda y: type(y) in (int, float), map(lambda x: x[1] + l[x[0] + 1] if x[0]+1 < len(l) else (), list(enumerate(l)))))
+    # return list(filter(lambda y: type(y) in (int, float), starmap(lambda x, i: x + l[i+1] if i+1 < len(l) else (), enumerate(l))))
 
 
 def suma(l, i=0):

@@ -6,6 +6,10 @@ def parni(list):
     return i
 
 
+def parni2(l1):
+    return len(list(filter(lambda x: x % 2 == 0, l1)))
+
+
 def poredak(lista1, lista2):
     kraca = lista1 if len(lista1) < len(lista2) else lista2
     duza = lista1 if len(lista1) >= len(lista2) else lista2
@@ -20,5 +24,5 @@ def poredak(lista1, lista2):
     return rez
 
 
-print(parni([1, 4, 5, 2, 8, 2]))
+print(parni2([1, 4, 5, 2, 8, 2]))
 print(poredak([1, 7, 2, 4], [2, 5, 2]))
