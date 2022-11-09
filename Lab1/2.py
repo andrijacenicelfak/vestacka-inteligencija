@@ -1,14 +1,12 @@
+from itertools import starmap, zip_longest
+
+
 def numlista(lista):
     return list(filter(lambda x: type(x) in (int, float), lista))
 
 
 def spojidict(l1, l2):
-    kraca = l1 if len(l1) < len(l2) else l2
-    duza = l1 if len(l1) >= len(l2) else l2
-    minusi = ['-'] * (len(duza) - len(kraca))
-    kraca.extend(minusi)
-    rez = list(map(lambda x, y: {'prvi': x, 'drugi': y}, l1, l2))
-    return rez
+    return list(starmap(lambda x, y: {"prvi": x, "drugi": y}, zip_longest(l1, l2, fillvalue='-')))
 
 
 print(numlista(["Prvi", "Drugi", 2, 4, [3, 5]]))

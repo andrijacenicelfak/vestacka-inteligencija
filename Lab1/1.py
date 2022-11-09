@@ -1,3 +1,6 @@
+from itertools import *
+
+
 def parni(list):
     i = 0
     for x in list:
@@ -10,18 +13,8 @@ def parni2(l1):
     return len(list(filter(lambda x: x % 2 == 0, l1)))
 
 
-def poredak(lista1, lista2):
-    kraca = lista1 if len(lista1) < len(lista2) else lista2
-    duza = lista1 if len(lista1) >= len(lista2) else lista2
-    nule = [0] * (len(duza) - len(kraca))
-    kraca.extend(nule)
-    rez = []
-
-    for i in range(len(lista1)):
-        rez.append(
-            (lista1[i], lista2[i], 'Jeste' if lista2[i] >= lista1[i]*2 else 'Nije'))
-
-    return rez
+def poredak(l1, l2):
+    return list(starmap(lambda x, y: (x, y, "Jeste" if y > x else "Nije"), zip_longest(l1, l2, fillvalue=0)))
 
 
 print(parni2([1, 4, 5, 2, 8, 2]))

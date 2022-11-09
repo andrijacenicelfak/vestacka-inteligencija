@@ -1,4 +1,4 @@
-import functools
+from functools import *
 
 
 def brojel(l1):
@@ -8,7 +8,7 @@ def brojel(l1):
 
 
 def proizvod(l1, l2):
-    return list(map(lambda x, y: functools.reduce(lambda a, b: a + b, x) * y, l1, l2))
+    return list(map(lambda x, y: reduce(lambda a, b: a + b, x) * y, l1, l2))
 
 
 print(brojel([[1, 2, 3], 3, [1, 2]]))
