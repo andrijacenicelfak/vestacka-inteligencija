@@ -3,8 +3,7 @@ from itertools import *
 
 
 def brojanje(strUlaz: str):
-    rez = list(strUlaz)
-    return max(starmap(lambda a, b: len(list(b)), groupby(strUlaz)))
+    return reduce(lambda a, b: a+1 if b > 1 else a, (starmap(lambda a, b: len(list(b)), groupby(strUlaz))), 0)
 
 
-print(brojanje("aatestttovi"))
+print(brojanje("aatesttovii"))
