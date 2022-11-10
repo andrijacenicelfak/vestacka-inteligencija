@@ -1,12 +1,10 @@
 from functools import *
-from itertools import starmap
+from itertools import *
 
 
 def brojanje(strUlaz: str):
     rez = list(strUlaz)
-    rez2 = [(reduce(lambda a, b: a, enumerate(rez), 0))
-            for i in range(len(rez))]
-    return max(rez2)
+    return max(starmap(lambda a, b: len(list(b)), groupby(strUlaz)))
 
 
-print(brojanje("aatesttovi"))
+print(brojanje("aatestttovi"))
