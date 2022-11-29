@@ -1,3 +1,4 @@
+from functools import reduce
 import queue
 
 # vraca udaljenost svih cvorova od end
@@ -23,14 +24,17 @@ def heuristika_udaljenost(graph, end):
     return heuristika
 
 
-def heuristika(graph, g1, g2, c):
+def heuristika(graph, g1, g2):
     d1 = heuristika_udaljenost(graph, g1)
     d2 = heuristika_udaljenost(graph, g2)
 
-    # print(d1)
-    # print(d2)
+    print(d1)
+    print(d2)
 
-    return d1 if d1[c] < d2[c] else d2
+    # d = reduce(lambda a, b: {*a, b: min(d1[b], d2[b])}, graph.keys(), dict())
+    for key in graph.keys():
+        graph[key] = (d1[key] if d1[key] < d2[key] else d2[key], graph[key])
+    return graph
 
 
 graph = {
@@ -42,4 +46,4 @@ graph = {
     'F': [(5, 'C'), (7, 'A'), (2, 'D')],
     'G': [(2, 'E'), (2, 'D')]
 }
-print(heuristika(graph, 'G', 'B', 'F'))
+print(heuristika(graph, 'A', 'D'))
