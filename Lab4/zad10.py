@@ -48,18 +48,31 @@ def rekurzivno(tabla, domine, koraci, i=0):
 
 def poredjaj_domine(tabla, domine):
 
-    poredjana_tabla = [[None]*len(tabla) for i in range(len(tabla[0]))]
-
+    poredjana_tabla = [['_']*len(tabla[0]) for i in range(len(tabla))]
     print("Po kojim vrednostima treba da se radju domine:")
     for t in tabla:
         print(t)
-    print("Pocetna tabla:")
-    for t in poredjana_tabla:
-        print(t)
+    print('\n')
     koraci = list()
     (moguce, koraci) = rekurzivno(tabla, domine, koraci)
     if not moguce:
-        print("Nema resenja!");
+        print("Nema resenja!")
+    else : 
+        for korak in koraci:
+            kord = korak[1][0]
+            domina = korak[0]
+            poredjana_tabla[kord[0]][kord[1]] = domina[0]
+            if korak[1][1] :
+                poredjana_tabla[kord[0]+1][kord[1]] =  domina[1]
+            else:
+                poredjana_tabla[kord[0]][kord[1]+1] = domina[1]
+            for i in range(len(poredjana_tabla)):
+                for j in range(len(poredjana_tabla[0])):
+                        print(poredjana_tabla[i][j], end=' ')
+                print('\n', end='')
+            print('\n', end='')
+                    
+                        
     return koraci
 
 
