@@ -19,18 +19,19 @@ def rekurzivno(tabla, domine, koraci, i=0):
     if len(domine) == 0:
         return (True, koraci)
     #(trenutno, nove_domine) = (domine[0], [*domine[1:]])
-    print(len(domine))
+    #print(len(domine))
+    #print(koraci)
     for trenutno in domine:
-        print("Depth", i)
-        print("Domina", trenutno)
-        for t in tabla:
-            print(t)
-        print('\n')
+        #print("Depth", i)
+        #print("Domina", trenutno)
+        # for t in tabla:
+        #     print(t)
+        # print('\n')
         lokacije = ima_u_tabli(tabla, trenutno)
         if (len(lokacije) == 0):
-            return (False, None)
+            continue
         for lokacija in lokacije:
-            print(lokacija)
+            # print(lokacija)
             nova_tabla = [x[:] for x in tabla]
             nova_tabla[lokacija[0][0]][lokacija[0][1]] = 'x'
             if not lokacija[1]:
@@ -38,11 +39,10 @@ def rekurzivno(tabla, domine, koraci, i=0):
             else:
                 nova_tabla[lokacija[0][0]+1][lokacija[0][1]] = 'x'
             domine_za_prosledjivanje = list(filter(lambda a : a != (trenutno[1], trenutno[0]) and a != trenutno, domine[:]))
-            novi_koraci = [*koraci, (trenutno, lokacija)]
+            novi_koraci = [*koraci, (trenutno, lokacija),]
             moguce = rekurzivno(nova_tabla, domine_za_prosledjivanje, novi_koraci, i+1)
             if moguce[0]:
                 return (True, moguce[1])
-
     return (False, None)
 
 
@@ -57,7 +57,9 @@ def poredjaj_domine(tabla, domine):
     for t in poredjana_tabla:
         print(t)
     koraci = list()
-    rekurzivno(tabla, domine, koraci)
+    (moguce, koraci) = rekurzivno(tabla, domine, koraci)
+    if not moguce:
+        print("Nema resenja!");
     return koraci
 
 
