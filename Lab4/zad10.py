@@ -18,20 +18,12 @@ def ima_u_tabli(tabla, domina):
 def rekurzivno(tabla, domine, koraci, i=0):
     if len(domine) == 0:
         return (True, koraci)
-    #(trenutno, nove_domine) = (domine[0], [*domine[1:]])
-    #print(len(domine))
-    #print(koraci)
+    
     for trenutno in domine:
-        #print("Depth", i)
-        #print("Domina", trenutno)
-        # for t in tabla:
-        #     print(t)
-        # print('\n')
         lokacije = ima_u_tabli(tabla, trenutno)
         if (len(lokacije) == 0):
             continue
         for lokacija in lokacije:
-            # print(lokacija)
             nova_tabla = [x[:] for x in tabla]
             nova_tabla[lokacija[0][0]][lokacija[0][1]] = 'x'
             if not lokacija[1]:
@@ -48,7 +40,7 @@ def rekurzivno(tabla, domine, koraci, i=0):
 
 def poredjaj_domine(tabla, domine):
 
-    poredjana_tabla = [['_']*len(tabla[0]) for i in range(len(tabla))]
+    poredjana_tabla = [[('_', False)]*len(tabla[0]) for i in range(len(tabla))]
     print("Po kojim vrednostima treba da se radju domine:")
     for t in tabla:
         print(t)
@@ -61,14 +53,18 @@ def poredjaj_domine(tabla, domine):
         for korak in koraci:
             kord = korak[1][0]
             domina = korak[0]
-            poredjana_tabla[kord[0]][kord[1]] = domina[0]
+            poredjana_tabla[kord[0]][kord[1]] = (domina[0], True)
             if korak[1][1] :
-                poredjana_tabla[kord[0]+1][kord[1]] =  domina[1]
+                poredjana_tabla[kord[0]+1][kord[1]] = (domina[1], True)
             else:
-                poredjana_tabla[kord[0]][kord[1]+1] = domina[1]
+                poredjana_tabla[kord[0]][kord[1]+1]= (domina[1], True)
             for i in range(len(poredjana_tabla)):
                 for j in range(len(poredjana_tabla[0])):
-                        print(poredjana_tabla[i][j], end=' ')
+                    if poredjana_tabla[i][j][1]:
+                        cprint(poredjana_tabla[i][j][0],color="blue", attrs=['bold'] ,end=' ')
+                    else:
+                        print(poredjana_tabla[i][j][0], end=' ')
+                    poredjana_tabla[i][j] = (poredjana_tabla[i][j][0], False)
                 print('\n', end='')
             print('\n', end='')
                     
