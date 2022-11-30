@@ -95,4 +95,24 @@ domine = [
     (1, 1), (1, 0),
     (0, 0)
 ]
-print(pronadji_put(tabla, domine))
+koraci = pronadji_put(tabla, domine)
+poredjana_tabla = [[('_', False)]*len(tabla[0]) for i in range(len(tabla))]
+
+for korak in koraci:
+    kord = korak[1][0]
+    domina = korak[0]
+    poredjana_tabla[kord[0]][kord[1]] = (domina[0], True)
+    if korak[1][1] :
+        poredjana_tabla[kord[0]+1][kord[1]] = (domina[1], True)
+    else:
+        poredjana_tabla[kord[0]][kord[1]+1]= (domina[1], True)
+    for i in range(len(poredjana_tabla)):
+        for j in range(len(poredjana_tabla[0])):
+            if poredjana_tabla[i][j][1]:
+                cprint(poredjana_tabla[i][j][0],color="blue", attrs=['bold'] ,end=' ')
+            else:
+                print(poredjana_tabla[i][j][0], end=' ')
+            poredjana_tabla[i][j] = (poredjana_tabla[i][j][0], False)
+        print('\n', end='')
+    print('\n', end='')
+print(koraci)
