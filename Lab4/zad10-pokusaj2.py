@@ -5,22 +5,34 @@ import queue
 
 def ima_u_tabli(tabla, domina):
     pronadjene = list()
+    # for i in range(4):
+    #     for j in range(4):
+    #         if domina[0] == tabla[i][j] and domina[1] == tabla[i][j + 1] :
+    #             pronadjene.append(((i, j), False, False))
+    # for i in range(4):
+    #     for j in range(4):
+    #         if domina[1] == tabla[i][j] and domina[0] == tabla[i][j + 1] :
+    #             pronadjene.append(((i, j), False, True))
+    # for i in range(3):
+    #     for j in range(5):
+    #         if domina[0] == tabla[i][j] and domina[1] == tabla[i + 1][j] :
+    #             pronadjene.append(((i, j), True, False))
+    # for i in range(3):
+    #     for j in range(5):
+    #         if domina[1] == tabla[i][j] and domina[0] == tabla[i + 1][j] :
+    #             pronadjene.append(((i, j), True, True))
     for i in range(4):
-        for j in range(4):
-            if domina[0] == tabla[i][j] and domina[1] == tabla[i][j + 1] :
-                pronadjene.append(((i, j), False, False))
-    for i in range(4):
-        for j in range(4):
-            if domina[1] == tabla[i][j] and domina[0] == tabla[i][j + 1] :
-                pronadjene.append(((i, j), False, True))
-    for i in range(3):
         for j in range(5):
-            if domina[0] == tabla[i][j] and domina[1] == tabla[i + 1][j] :
-                pronadjene.append(((i, j), True, False))
-    for i in range(3):
-        for j in range(5):
-            if domina[1] == tabla[i][j] and domina[0] == tabla[i + 1][j] :
-                pronadjene.append(((i, j), True, True))
+            if j < 4:
+                if domina[0] == tabla[i][j] and domina[1] == tabla[i][j + 1]:
+                    pronadjene.append(((i, j), False, False))
+                if domina[1] == tabla[i][j] and domina[0] == tabla[i][j + 1]:
+                    pronadjene.append(((i, j), False, True))
+            if i < 3:
+                if domina[0] == tabla[i][j] and domina[1] == tabla[i + 1][j]:
+                    pronadjene.append(((i, j), True, False))
+                if domina[1] == tabla[i][j] and domina[0] == tabla[i + 1][j]:
+                    pronadjene.append(((i, j), True, True))
 
     return (len(pronadjene),  domina, pronadjene)
 
@@ -47,27 +59,36 @@ def make_list(tabla):
     return reduce(lambda a, b: [*a, reduce(lambda x, y: [*x, y], b, tuple())], tabla, tuple())
 
 def pronadji_put(tabla, domine):
+    broj_proverenih_stanja = 0
     open_set = list()
     kraj = False
     svi_koraci = list()
     open_set.append((10, tabla, domine, list()))
+    open_set.sort(key=lambda a : a[0])
     while len(open_set) > 0 and not kraj:
+        broj_proverenih_stanja += 1
         (nova_tabla, nove_domine, heur, potezi, koraci) = (None, None, 9999, None, None)
         broj_poteza = 10
-        open_set.sort(key=lambda a : a[0])
         domina = None
         index = -1
         for i in range(len(open_set)):
             (bp, nt, ds, k) = open_set[i]
             if(len(ds) == 0):
                 continue
-            heuristics = ima_u_tabli(nt, ds[0])
-            if nova_tabla is None or heuristics[0] < heur:
-                domina = ds[0]
+            trenutno = ima_u_tabli(nt, ds[0])
+            trenutna_domina = ds[0]
+            for j in ds[1:]:
+                t2 = ima_u_tabli(nt, j)
+                if trenutno[0] > t2[0]:
+                    trenutno = t2
+                    trenutna_domina = j
+            trenutne_domine = list(filter(lambda a: a != trenutna_domina, ds))
+            if nova_tabla is None or trenutno[0] < heur:
+                domina = trenutna_domina
                 nova_tabla = nt
-                nove_domine = ds[1:]
-                heur = heuristics[0]
-                potezi = heuristics[2]
+                nove_domine = trenutne_domine
+                heur = trenutno[0]
+                potezi = trenutno[2]
                 koraci = k
                 broj_poteza = bp
                 index = i
@@ -80,8 +101,7 @@ def pronadji_put(tabla, domine):
             if( len(novi_koraci)== 10):
                 kraj = True
                 svi_koraci = novi_koraci
-
-    return svi_koraci
+    return (svi_koraci, broj_proverenih_stanja)
 
 tabla = [
     [2, 3, 2, 2, 2],
@@ -89,13 +109,30 @@ tabla = [
     [3, 0, 3, 1, 1],
     [0, 1, 1, 1, 2]
 ]
+tabla2 = [
+    [2, 3, 3, 0, 0],
+    [2, 1, 3, 1, 0],
+    [2, 0, 2, 1, 0],
+    [3, 3, 1, 2, 1]
+]
+tabla3 = [
+    [2, 3, 3, 0, 0],
+    [2, 1, 3, 0, 0],
+    [2, 1, 1, 2, 0],
+    [3, 3, 1, 2, 1]
+]
+tabla4 = [[2, 3, 2, 2, 2],
+          [3, 0, 0, 3, 0],
+          [3, 0, 3, 1, 1],
+          [0, 1, 1, 1, 2]]
+
 domine = [
     (3, 3), (3, 2), (3, 1), (3, 0),
     (2, 2), (2, 1), (2, 0),
     (1, 1), (1, 0),
     (0, 0)
 ]
-koraci = pronadji_put(tabla, domine)
+(koraci, broj_prolaza) = pronadji_put(tabla4, domine)
 poredjana_tabla = [[('_', False)]*len(tabla[0]) for i in range(len(tabla))]
 
 for korak in koraci:
@@ -116,3 +153,4 @@ for korak in koraci:
         print('\n', end='')
     print('\n', end='')
 print(koraci)
+print("Broj stanja : ", broj_prolaza)
