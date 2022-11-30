@@ -18,7 +18,6 @@ def ima_u_tabli(tabla, domina):
 def rekurzivno(tabla, domine, koraci, i=0):
     if len(domine) == 0:
         return (True, koraci)
-    
     for trenutno in domine:
         lokacije = ima_u_tabli(tabla, trenutno)
         if (len(lokacije) == 0):
